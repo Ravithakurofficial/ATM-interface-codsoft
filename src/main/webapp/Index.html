@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>ATM Interface</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    
+        <div class="backgroundimg">
+            <img class="img1" src="financial-banking-technology-concept_387612-31.jpg" alt="Background Image">
+        
+            <div class="monitor" id="monitor" style="display: ;">
+                <p class="instructions">Please select an option:</p>
+                <ul class="options1">
+                    <li><button onclick="showWithdrawal()" class="option-button" type="button">Withdraw Cash</button></li>
+                    <li><button onclick="showBalance()" class="option-button" type="button">Check Balance</button></li>
+                    <li><button onclick="showDeposit()" class="option-button" type="button">Deposit Amount</button></li>
+                </ul>
+                <ul class="option2">
+                    <li><button onclick="exit()" class="option-button" type="button">Exit</button></li>
+                    <li><button onclick="showChangePin()" class="option-button" type="button">Change Pin</button></li>
+                </ul>
+            </div>
+            
+            <div class="monitor" id="withdrawal" style="display: none;">
+                <form id="withdrawal-form">
+                    <table>
+                        <tr>
+                            <td>Enter The Amount to be withdrawn:</td>
+                        </tr>
+                        <tr>
+                            <td style="margin-top: 30rem; margin-left: 5rem;"><input type="number" id="withdrawalAmount"></td>
+                        </tr>
+                        <tr>
+                            <td style="margin-top: 30rem; margin-left: 5rem;"><button type="button" onclick="performWithdrawal()">Submit</button></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+            <div class="monitor" id="balance" style="display: none;">
+            </div>
+            <div class="monitor" id="exit" style="display: none;">
+            </div>
+
+            <div class="monitor" id="deposit" style="display: none;">
+                <form id="deposit-form">
+                    <table>
+                        <tr>
+                            <td>Enter The Amount to be deposited:</td>
+                        </tr>
+                        <tr>
+                            <td style="margin-top: 30rem; margin-left: 5rem;"><input type="number" id="depositAmount"></td>
+                        </tr>
+                        <tr>
+                            <td style="margin-top: 30rem; margin-left: 5rem;"><button type="button" onclick="performDeposit()">Submit</button></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+            <div class="monitor" id="changepin" style="display: none;">
+                <form action="changepin-action" name="changepin-form">
+                    <table>
+                        <tr>
+                            <td>
+                                Enter The Old Pin:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="number" id="oldPin">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Enter The New Pin:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="number" id="newPin">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button type="button" onclick="performChangePin()">Submit</button>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+function showWithdrawal() {
+    resetDisplays();
+    document.getElementById("withdrawal").style.display = "";
+    document.getElementById("monitor").style.display = "none";
+    
+    setTimeout(function () {
+        resetDisplays();
+        document.getElementById("monitor").style.display = "block";
+    }, 15000);
+}
+function exit() {
+    resetDisplays();
+    document.getElementById("monitor").style.display = "none";
+
+    const exit = document.getElementById("exit").value;
+
+    fetch("action", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `action=4&exit=${exit}`,
+    })
+    .then((response) => response.text())
+    .then((data) => {
+        document.getElementById("exit").style.display = "";
+        const disp = document.getElementById("exit");
+        disp.innerHTML = data;
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+
+    setTimeout(function () {
+        resetDisplays();
+        document.getElementById("monitor").style.display = "block";
+    }, 6000);
+}
+
+function showDeposit() {
+    resetDisplays();
+    document.getElementById("deposit").style.display = "block";
+    document.getElementById("monitor").style.display = "none";
+    setTimeout(function () {
+        resetDisplays();
+        document.getElementById("monitor").style.display = "block";
+    }, 15000);
+}
+
+function showBalance() {
+    resetDisplays();
+    document.getElementById("balance").style.display = "block";
+    document.getElementById("monitor").style.display = "none";
+
+    const depositAmount = document.getElementById("depositAmount").value;
+
+    fetch("action", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `action=2&balanceAmount=${showBalance}`,
+    })
+    .then((response) => response.text())
+    .then((data) => {
+        document.getElementById("balance").style.display = "";
+        const disp = document.getElementById("balance");
+        disp.innerHTML = data;
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+
+    setTimeout(function () {
+        resetDisplays();
+        document.getElementById("monitor").style.display = "block";
+    }, 6000);
+}
+
+function showDeposit() {
+    resetDisplays();
+    document.getElementById("deposit").style.display = "block";
+    document.getElementById("monitor").style.display = "none";
+    setTimeout(function () {
+        resetDisplays();
+        document.getElementById("monitor").style.display = "block";
+    }, 15000);
+}
+
+function showChangePin() {
+    resetDisplays();
+    document.getElementById("changepin").style.display = "block";
+    setTimeout(function () {
+        resetDisplays();
+        document.getElementById("monitor").style.display = "block";
+    }, 15000);
+}
+
+function resetDisplays() {
+    document.getElementById("monitor").style.display = "";
+    document.getElementById("withdrawal").style.display = "none";
+    document.getElementById("balance").style.display = "none";
+    document.getElementById("deposit").style.display = "none";
+    document.getElementById("changepin").style.display = "none";
+    document.getElementById("exit").style.display = "none";
+    
+}
+
+function performWithdrawal() {
+    const withdrawalAmount = document.getElementById("withdrawalAmount").value;
+
+    fetch("action", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `action=1&withdrawAmount=${withdrawalAmount}`,
+    })
+    .then((response) => response.text())
+    .then((data) => {
+        document.getElementById("balance").style.display = "";
+        const disp = document.getElementById("balance");
+        disp.innerHTML = data;
+        document.getElementById("withdrawal").style.display = "none";
+        document.getElementById("monitor").style.display = "none";
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+
+    document.getElementById("monitor").style.display = "block";
+    resetDisplays();
+    
+}
+
+function performDeposit() {
+    const depositAmount = document.getElementById("depositAmount").value;
+
+    fetch("action", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `action=3&depositAmount=${depositAmount}`,
+    })
+    .then((response) => response.text())
+    .then((data) => {
+        document.getElementById("balance").style.display = "";
+        const disp = document.getElementById("balance");
+        disp.innerHTML = data;
+        document.getElementById("deposit").style.display = "none";
+        document.getElementById("monitor").style.display = "none";
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+
+    resetDisplays();
+    document.getElementById("monitor").style.display = "block";
+}
+
+
+
+        
+    </script>
+</body>
+</html>
